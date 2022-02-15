@@ -7,4 +7,9 @@
 # This file will handle the backend processing of this information retrieval program
 """
 
+#TODO, tokenize and normalize text
+#TODO, make inverted index for documents
+#TODO, query inverted index
+
+
 pass
