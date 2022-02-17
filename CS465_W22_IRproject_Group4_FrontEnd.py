@@ -10,8 +10,11 @@ import sys
 
 import PySimpleGUI as sg
 
-from CS465_W22_IRproject_Group4_BackEnd import (
-    initialize, perform_query, specified_word_frequencies)
+from CS465_W22_IRproject_Group4_BackEnd import (all_term_frequencies,
+                                                distinct_terms,
+                                                distinct_terms_doc, initialize,
+                                                perform_query,
+                                                specified_word_frequencies)
 
 
 def run_document_window(window):
@@ -80,24 +83,39 @@ if __name__ == "__main__":
         "CS465 W22 IR Project Group 4", document_layout)
 
     # get index from document gui
-    index = run_document_window(document_window)
+    (file_list, index) = run_document_window(document_window)
     if index is None:
         sys.exit()  # if no documents were found close program
     document_window.close()
     # endregion
 
-    # region begin index processing
+    # region collect statistics on index
+    # Report the number of distinct words observed in each document,
+    #  and the total number of words encountered.
+    distinct_terms_headers = []
+    distinct_terms_values = []
+    for docID in range(len(file_list)):
+        distinct_terms_headers.append(f"Doc{docID}'s Distinct Terms")
+        distinct_terms_values.extend([distinct_terms_doc(index, docID)])
+    distinct_terms_headers.append("All Documents' Distinct Terms")
+    distinct_terms_values.extend([distinct_terms(index)])
+    print(distinct_terms_values)
+    distinct_terms_row = [
+        sg.Text("Distinct Term Frequencies:"),
+        sg.Table(
+            headings=distinct_terms_headers,
+            values=[distinct_terms_values],
+            num_rows=1
+        )
+    ]
+
+    # Report the top 100th, 500th, and 1000th most-frequent word
+    #  and their frequencies of occurrence.
     word_frequency_rank_100 = specified_word_frequencies(index, 100)
     word_frequency_rank_500 = specified_word_frequencies(index, 500)
     word_frequency_rank_1000 = specified_word_frequencies(index, 1000)
-    # endregion
-
-    # region run main gui
-    # define gui layout
-    main_title_row = [sg.Text("CS465 W22 IR Project Group 4")]
-    query_row = [sg.Text("Query:"), sg.InputText(), sg.Button('Run Query')]
-    statistics_row = [
-        sg.Text("Term Frequencies:"),
+    specific_frequencies_row = [
+        sg.Text("Specific Term Frequencies:"),
         sg.Table(
             headings=[
                 '100th Most Frequent',
@@ -112,11 +130,38 @@ if __name__ == "__main__":
             num_rows=1
         )
     ]
+    # Report the total number of times each word is seen (term frequency)
+    #  and the document IDs where the word occurs (Output the posting list for a term).
+    every_term_frequency = all_term_frequencies(index)
+    term_rank = 1
+    for term_frequency in every_term_frequency:
+        term_frequency.append(term_rank)
+        term_rank = term_rank + 1
+    all_frequencies_row = [
+        sg.Text("All Term Frequencies:"),
+        sg.Table(
+            headings=[
+                'Term',
+                'Count',
+                'Frequency Rank'
+            ],
+            values=every_term_frequency
+        )
+    ]
+    # endregion
+
+    # region run main gui
+    # define gui layout
+    main_title_row = [sg.Text("CS465 W22 IR Project Group 4")]
+    query_row = [sg.Text("Query:"), sg.InputText(), sg.Button('Run Query')]
+
     exit_row = [sg.Button("Exit")]
     main_layout = [
         main_title_row,
         query_row,
-        statistics_row,
+        distinct_terms_row,
+        specific_frequencies_row,
+        all_frequencies_row,
         exit_row]
     main_window = sg.Window("CS465 W22 IR Project Group 4", main_layout)
     # run window
