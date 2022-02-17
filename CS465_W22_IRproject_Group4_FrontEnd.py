@@ -41,10 +41,47 @@ def run_main_window(window, index_to_query):
         event, values = window.read()
         # End program if user closes window or
         # presses the OK button
+        if event in ['Query Help']:
+            query_help_popup()
         if event in ['Run Query']:
             query_results = perform_query(index_to_query, values[0])
             query_results_popup(values[0], query_results)
         if event in ["Exit", sg.WIN_CLOSED]:
+            break
+
+
+def query_help_popup():
+    """
+    # creates a popup window for displaying query help
+    # -mm
+    """
+    popup_layout = [
+        [sg.Text("CS465 W22 IR Project Group 4")],
+        [sg.Text(
+            "Queries can be comprised of a single term or multiple terms seperated by '&' for AND, '|' for OR. ",
+            expand_x=True,
+            justification='left'
+        )],
+        [sg.Text(
+            "OR operations are performed first, then AND operations.",
+            expand_x=True,
+            justification='left'
+        )],
+        [sg.Text(
+            "Search is case-insensitive.",
+            expand_x=True,
+            justification='left'
+        )],
+        [sg.Text(
+            "Example query: \'springs | spurred & immensely\'",
+            expand_x=True,
+            justification='left'
+        )],
+    ]
+    popup_window = sg.Window("CS465 W22 IR Project Group 4", popup_layout)
+    while True:
+        event, _ = popup_window.read()
+        if event in [sg.WIN_CLOSED]:
             break
 
 
@@ -128,7 +165,7 @@ if __name__ == "__main__":
                 f"{word_frequency_rank_1000[0]}, Count: {word_frequency_rank_1000[1]}"
             ]],
             num_rows=1,
-            expand_x=True       
+            expand_x=True
         )
     ]
     # Report the total number of times each word is seen (term frequency)
@@ -149,7 +186,7 @@ if __name__ == "__main__":
             values=every_term_frequency,
             expand_x=True,
             expand_y=True,
-            alternating_row_color = 'Grey'
+            alternating_row_color='Grey'
         )
     ]
     # endregion
@@ -161,11 +198,7 @@ if __name__ == "__main__":
         sg.Text("Query:"),
         sg.InputText(),
         sg.Button('Run Query'),
-        sg.Text(
-            "Use '&' for AND, '|' for OR. User can use multiple operands in one query.",
-            expand_x=True,
-            justification='left'
-        )
+        sg.Button('Query Help')
     ]
 
     exit_row = [sg.Button("Exit"), sg.Sizegrip()]
