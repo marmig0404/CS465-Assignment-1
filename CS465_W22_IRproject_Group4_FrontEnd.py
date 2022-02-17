@@ -128,7 +128,7 @@ if __name__ == "__main__":
                 f"{word_frequency_rank_1000[0]}, Count: {word_frequency_rank_1000[1]}"
             ]],
             num_rows=1,
-            expand_x=True            
+            expand_x=True       
         )
     ]
     # Report the total number of times each word is seen (term frequency)
