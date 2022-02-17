@@ -128,7 +128,7 @@ if __name__ == "__main__":
                 f"{word_frequency_rank_1000[0]}, Count: {word_frequency_rank_1000[1]}"
             ]],
             num_rows=1,
-            expand_x=True
+            expand_x=True            
         )
     ]
     # Report the total number of times each word is seen (term frequency)
@@ -147,7 +147,9 @@ if __name__ == "__main__":
                 'Frequency Rank'
             ],
             values=every_term_frequency,
-            expand_x=True
+            expand_x=True,
+            expand_y=True,
+            alternating_row_color = 'Grey'
         )
     ]
     # endregion
@@ -166,7 +168,7 @@ if __name__ == "__main__":
         )
     ]
 
-    exit_row = [sg.Button("Exit")]
+    exit_row = [sg.Button("Exit"), sg.Sizegrip()]
     main_layout = [
         main_title_row,
         query_row,
@@ -178,7 +180,8 @@ if __name__ == "__main__":
         "CS465 W22 IR Project Group 4",
         auto_size_text=False,
         default_element_size=(25, 1),
-        text_justification='right'
+        text_justification='right',
+        resizable=True
     ).Layout(main_layout)
     # run window
     run_main_window(main_window, index)
