@@ -175,7 +175,7 @@ def specified_word_frequencies(index, frequency_rank):
 def perform_query(index_to_query, query):
     """
     # function to process a query on an index.
-    # works recursively to step through a query, 
+    # works recursively to step through a query,
     # starts with ands, left to right, then ors, l to r
     # -mm
     """
@@ -221,4 +221,4 @@ def initialize(directory_name):
     """
     file_list = load_files(directory_name)
     file_contents = read_contents(file_list)
-    return add_contents_to_dictionary(file_contents)
+    return (file_list, add_contents_to_dictionary(file_contents))
