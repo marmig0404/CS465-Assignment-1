@@ -182,7 +182,6 @@ def perform_query(index_to_query, query):
     query = split_query(query)
     if '_' in query[1]:
         # find documents that include single word query
-        # TODO split multi-word queries into different searches, find words within n count
         return posting_list_term(index_to_query, query[0].lower())
     # split query further
     result_before_operand = perform_query(
@@ -210,7 +209,6 @@ def split_query(query_string):
         parts = query_string.split('|', 1)
         parts.append("|")
         return parts
-
     else:
         return [query_string.replace(" ", ""), '_']
 
