@@ -183,7 +183,7 @@ def perform_query(index_to_query, query):
     if '_' in query[1]:
         # find documents that include single word query
         # TODO split multi-word queries into different searches, find words within n count
-        return posting_list_term(index_to_query, query[0])
+        return posting_list_term(index_to_query, query[0].lower())
     # split query further
     result_before_operand = perform_query(
         index_to_query, split_query(query[0]))
@@ -200,7 +200,9 @@ def split_query(query_string):
     # function which splits query into highest order operation and operands
     # -mm
     """
-    if "&" in query_string:
+    if "_" in query_string or isinstance(query_string, list):
+        return query_string
+    elif "&" in query_string:
         parts = query_string.split('&', 1)
         parts.append("&")
         return parts
@@ -208,8 +210,7 @@ def split_query(query_string):
         parts = query_string.split('|', 1)
         parts.append("|")
         return parts
-    elif "_" in query_string:
-        return query_string
+
     else:
         return [query_string.replace(" ", ""), '_']
 
