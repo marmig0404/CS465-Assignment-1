@@ -3,3 +3,4 @@ __pycache__
 output
 .vscode
 .tmp
+build_options.json
