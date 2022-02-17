@@ -104,7 +104,8 @@ if __name__ == "__main__":
         sg.Table(
             headings=distinct_terms_headers,
             values=[distinct_terms_values],
-            num_rows=1
+            num_rows=1,
+            expand_x=True
         )
     ]
 
@@ -126,7 +127,8 @@ if __name__ == "__main__":
                 f"{word_frequency_rank_500[0]}, Count: {word_frequency_rank_500[1]}",
                 f"{word_frequency_rank_1000[0]}, Count: {word_frequency_rank_1000[1]}"
             ]],
-            num_rows=1
+            num_rows=1,
+            expand_x=True
         )
     ]
     # Report the total number of times each word is seen (term frequency)
@@ -144,7 +146,8 @@ if __name__ == "__main__":
                 'Count',
                 'Frequency Rank'
             ],
-            values=every_term_frequency
+            values=every_term_frequency,
+            expand_x=True
         )
     ]
     # endregion
@@ -152,7 +155,16 @@ if __name__ == "__main__":
     # region run main gui
     # define gui layout
     main_title_row = [sg.Text("CS465 W22 IR Project Group 4")]
-    query_row = [sg.Text("Query:"), sg.InputText(), sg.Button('Run Query')]
+    query_row = [
+        sg.Text("Query:"),
+        sg.InputText(),
+        sg.Button('Run Query'),
+        sg.Text(
+            "Use '&' for AND, '|' for OR. User can use multiple operands in one query.",
+            expand_x=True,
+            justification='left'
+        )
+    ]
 
     exit_row = [sg.Button("Exit")]
     main_layout = [
@@ -162,7 +174,12 @@ if __name__ == "__main__":
         specific_frequencies_row,
         all_frequencies_row,
         exit_row]
-    main_window = sg.Window("CS465 W22 IR Project Group 4", main_layout)
+    main_window = sg.Window(
+        "CS465 W22 IR Project Group 4",
+        auto_size_text=False,
+        default_element_size=(25, 1),
+        text_justification='right'
+    ).Layout(main_layout)
     # run window
     run_main_window(main_window, index)
     # close window
