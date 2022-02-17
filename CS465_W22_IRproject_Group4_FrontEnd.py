@@ -99,7 +99,6 @@ if __name__ == "__main__":
         distinct_terms_values.extend([distinct_terms_doc(index, docID)])
     distinct_terms_headers.append("All Documents' Distinct Terms")
     distinct_terms_values.extend([distinct_terms(index)])
-    print(distinct_terms_values)
     distinct_terms_row = [
         sg.Text("Distinct Term Frequencies:"),
         sg.Table(
