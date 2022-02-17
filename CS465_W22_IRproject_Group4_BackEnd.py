@@ -101,7 +101,7 @@ def total_words(index):
     words = 0
     for term in index.values():
         for doc in term.values():
-            for occ in doc:
+            for _ in doc:
                 words = words + 1
     return words
 
@@ -113,7 +113,7 @@ def total_words_doc(index, docnum):
     words = 0
     for term in index.values():
         if docnum in term:
-            for occ in term[docnum]:
+            for _ in term[docnum]:
                 words = words + 1
     return words
 
@@ -125,7 +125,7 @@ def term_frequency(index, term):
     freq = 0
     if term in index:
         for doc in index[term].values():
-            for occ in doc:
+            for _ in doc:
                 freq = freq + 1
     return freq
 
@@ -150,45 +150,20 @@ def posting_list_term(index, term):
     return posting
 
 
-def specified_word_frequencies(index):
+def specified_word_frequencies(index, frequency_rank):
     """
-    # returns the 100th, 500th, and 1000th most common words and their frequencies
+    # returns a term at a specified rank of frequency
     """
-    swf = []
     term_frequencies = all_term_frequencies(index)
-    if len(term_frequencies) > 99:
-        swf.append([100, term_frequencies[100][0], term_frequencies[100][1]])
-        if len(term_frequencies) > 499:
-            swf.append([500, term_frequencies[500]
-                       [0], term_frequencies[500][1]])
-            if len(term_frequencies) > 999:
-                swf.append([1000, term_frequencies[1000]
-                           [0], term_frequencies[1000][1]])
-    return swf
+    if len(term_frequencies) <= frequency_rank:
+        return ["n/a", "n/a"]
+    return term_frequencies[frequency_rank]
 
 
-if __name__ == "__main__":
-    # CONSOLE OUTPUT FOR TESTING WITHOUT GUI
-    DIRECTORY_NAME = 'documents/'
-    file_list = load_files(DIRECTORY_NAME)
+def initialize(directory_name):
+    """
+    # read files and make index
+    """
+    file_list = load_files(directory_name)
     file_contents = read_contents(file_list)
-    index = add_contents_to_dictionary(file_contents)
-    print('dt ' + str(distinct_terms(index)))
-    print('dt0 ' + str(distinct_terms_doc(index, 0)))
-    print('dt1 ' + str(distinct_terms_doc(index, 1)))
-    print('dt2 ' + str(distinct_terms_doc(index, 2)))
-    print('tw ' + str(total_words(index)))
-    print('tw0 ' + str(total_words_doc(index, 0)))
-    print('tw1 ' + str(total_words_doc(index, 1)))
-    print('tw2 ' + str(total_words_doc(index, 2)))
-    print('tf a ' + str(term_frequency(index, 'a')))
-    print('tf the ' + str(term_frequency(index, 'the')))
-    print('tf nautilus ' + str(term_frequency(index, 'nautilus')))
-    print('tf barsoom ' + str(term_frequency(index, 'barsoom')))
-    print('tf alsuhvojsdf ' + str(term_frequency(index, 'alsuhvojsdf')))
-    print('pl a ' + str(posting_list_term(index, 'a')))
-    print('pl the ' + str(posting_list_term(index, 'the')))
-    print('pl nautilus ' + str(posting_list_term(index, 'nautilus')))
-    print('pl barsoom ' + str(posting_list_term(index, 'barsoom')))
-    print('pl alsuhvojsdf ' + str(posting_list_term(index, 'alsuhvojsdf')))
-    print(specified_word_frequencies(index))
+    return add_contents_to_dictionary(file_contents)
