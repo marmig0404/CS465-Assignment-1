@@ -1,7 +1,7 @@
 """
 # CS465-W22-IRproject-Group4-FrontEnd.py
 #
-# CS465/665, W22, and Project #4
+# CS465/665, W22, and Project #1
 # Martin Miglio and Johnathan Max Tomlin
 #
 # This file will handle the graphical user interface of this information retrieval program
@@ -32,7 +32,7 @@ if __name__ == "__main__":
     statistics_row = [sg.Text("Statistics:"), sg.Table(values=[
         ['stat1', 'stat2', 'stat3']], headings=['statName1', 'statName2', 'statName3'])]
     exit_row = [sg.Button("Exit")]
-    
+
     # layout for window
     layout = [
         title_row,
