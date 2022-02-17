@@ -2,7 +2,7 @@
 # CS465-W22-IRproject-Group4-BackEnd.py
 #
 # CS465/665, W22, and Project #1
-# Martin Miglio and Johnathan Max Tomlin
+# Martin Miglio and Johnathan Max Tomlin  (Group 4)
 #
 # This file will handle the backend processing of this information retrieval program
 """
