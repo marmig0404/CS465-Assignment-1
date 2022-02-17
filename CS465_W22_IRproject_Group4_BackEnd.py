@@ -172,6 +172,48 @@ def specified_word_frequencies(index, frequency_rank):
     return term_frequencies[frequency_rank]
 
 
+def perform_query(index_to_query, query):
+    """
+    # function to process a query on an index.
+    # works recursively to step through a query, 
+    # starts with ands, left to right, then ors, l to r
+    # -mm
+    """
+    query = split_query(query)
+    if '_' in query[1]:
+        # find documents that include single word query
+        # TODO split multi-word queries into different searches, find words within n count
+        return posting_list_term(index_to_query, query[0])
+    # split query further
+    result_before_operand = perform_query(
+        index_to_query, split_query(query[0]))
+    result_after_operand = perform_query(index_to_query, split_query(query[1]))
+    if '&' in query[2]:
+        # return anded queries 0 ,1
+        return [value for value in result_before_operand if value in result_after_operand]
+    # return ored queries 0,1
+    return list(set(result_before_operand) | set(result_after_operand))
+
+
+def split_query(query_string):
+    """
+    # function which splits query into highest order operation and operands
+    # -mm
+    """
+    if "&" in query_string:
+        parts = query_string.split('&', 1)
+        parts.append("&")
+        return parts
+    elif "|" in query_string:
+        parts = query_string.split('|', 1)
+        parts.append("|")
+        return parts
+    elif "_" in query_string:
+        return query_string
+    else:
+        return [query_string.replace(" ", ""), '_']
+
+
 def initialize(directory_name):
     """
     # read files and make index
